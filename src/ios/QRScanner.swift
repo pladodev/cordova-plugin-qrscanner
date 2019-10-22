@@ -153,7 +153,7 @@ class QRScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate {
                 metaOutput = AVCaptureMetadataOutput()
                 captureSession!.addOutput(metaOutput!)
                 metaOutput!.setMetadataObjectsDelegate(self, queue: DispatchQueue.main)
-                metaOutput!.metadataObjectTypes = [AVMetadataObject.ObjectType.qr, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.upce, AVMetadataObject.ObjectType.itf14]
+                metaOutput!.metadataObjectTypes = [AVMetadataObject.ObjectType.qr, AVMetadataObject.ObjectType.ean13, AVMetadataObject.ObjectType.ean8, AVMetadataObject.ObjectType.upce, AVMetadataObject.ObjectType.itf14, AVMetadataObject.ObjectType.code93, AVMetadataObject.ObjectType.code39]
                 captureVideoPreviewLayer = AVCaptureVideoPreviewLayer(session: captureSession!)
                 cameraView.addPreviewLayer(captureVideoPreviewLayer)
                 captureSession!.startRunning()
@@ -239,7 +239,7 @@ class QRScanner : CDVPlugin, AVCaptureMetadataOutputObjectsDelegate {
         }
 
         let found = metadataObjects[0] as! AVMetadataMachineReadableCodeObject
-        if (found.type == AVMetadataObject.ObjectType.qr || found.type == AVMetadataObject.ObjectType.ean13 || found.type == AVMetadataObject.ObjectType.ean8 || found.type == AVMetadataObject.ObjectType.upce || found.type == AVMetadataObject.ObjectType.itf14) && found.stringValue != nil {
+        if (found.type == AVMetadataObject.ObjectType.qr || found.type == AVMetadataObject.ObjectType.ean13 || found.type == AVMetadataObject.ObjectType.code39 || found.type == AVMetadataObject.ObjectType.code93 || found.type == AVMetadataObject.ObjectType.ean8 || found.type == AVMetadataObject.ObjectType.upce || found.type == AVMetadataObject.ObjectType.itf14) && found.stringValue != nil {
             scanning = false
             let pluginResult = CDVPluginResult(status: CDVCommandStatus_OK, messageAs: found.stringValue)
             commandDelegate!.send(pluginResult, callbackId: nextScanningCommand?.callbackId!)
